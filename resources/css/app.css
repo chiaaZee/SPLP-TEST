@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+/* Source detection */
+@source "../../resources/**/*.blade.php";
+@source "../../resources/**/*.js";
+@source "../../resources/**/*.vue";
+@source "../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php";
+
+@theme {
+    /* 1. Custom Colors */
+    --color-brand-bg: #F8F7FA;
+    --color-brand-primary: #7367F0;
+    --color-brand-primaryLight: #A69EF5;
+    --color-brand-mutedBlue: #9FB4C7;
+    --color-brand-deepBlue: #255B9D;
+    --color-brand-steelBlue: #4579AD;
+    --color-brand-dark: #090E12;
+    --color-vuexy: #7367F0;
+    --color-vuexy-light: #9E95F5;
+
+    /* 2. Custom Fonts */
+    --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+    /* 3. Custom Tracking (Letter Spacing) */
+    /* Ini akan otomatis membuat class tracking-widest, tracking-ultra, dll */
+    --tracking-widest: 0.25em; 
+    --tracking-ultra: 0.3em;
+    --tracking-tighter-extreme: -0.04em;
+
+    /* 4. Custom Animations */
+    --animate-blob: blob 10s infinite;
+    --animate-spin-slow: spin 30s linear infinite;
+    --animate-spin-reverse: spin-reverse 20s linear infinite;
+    --animate-bounce-slow: bounce-slow 6s ease-in-out infinite;
+
+    /* 5. Keyframes Definition */
+    @keyframes blob {
+        0% { transform: translate(0px, 0px) scale(1); }
+        33% { transform: translate(30px, -50px) scale(1.1); }
+        66% { transform: translate(-20px, 20px) scale(0.9); }
+        100% { transform: translate(0px, 0px) scale(1); }
+    }
+    @keyframes spin-reverse {
+        from { transform: rotate(360deg); }
+        to { transform: rotate(0deg); }
+    }
+    @keyframes bounce-slow {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-15px); }
+    }
+}
+
+/* 6. Custom Utilities */
+@utility perspective-1000 {
+    perspective: 1000px;
+}
+
+@utility animation-delay-2000 {
+    animation-delay: 2s;
+}
+
+@utility animation-delay-4000 {
+    animation-delay: 4s;
+}
+
+/* 7. Base Styles / Global */
+@layer base {
+    [x-cloak] { 
+        display: none !important; 
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #CBD5E1;
+        border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #94A3B8;
+    }
+}

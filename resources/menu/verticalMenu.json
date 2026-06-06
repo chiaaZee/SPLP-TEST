@@ -1,0 +1,164 @@
+{
+  "menu": [
+    {
+      "url": "dashboard",
+      "name": "Dashboard",
+      "icon": "menu-icon tf-icons ti ti-smart-home",
+      "slug": "dashboard"
+    },
+    {
+      "menuHeader": "Manajemen API"
+    },
+    {
+      "url": "admin/agency",
+      "name": "Data Perangkat Daerah",
+      "icon": "menu-icon tf-icons ti ti-building",
+      "slug": "agency.*",
+      "permission": "manage_agencies"
+    },
+    {
+      "url": "admin/service-catalogs",
+      "name": "Katalog Layanan API",
+      "icon": "menu-icon tf-icons ti ti-layout-grid",
+      "slug": "service-catalogs.*",
+      "permission": "view_catalogs"
+    },
+    {
+      "url": "admin/service-verification",
+      "name": "Verifikasi Layanan",
+      "icon": "menu-icon tf-icons ti ti-checklist",
+      "slug": "admin.service-verification",
+      "permission": "manage_catalogs"
+    },
+    {
+      "url": "admin/template-manager",
+      "name": "Kelola Template UAT",
+      "icon": "menu-icon tf-icons ti ti-file-settings",
+      "slug": "admin.template-manager",
+      "permission": "manage_catalogs"
+    },
+    {
+      "url": "my-services/incoming-requests",
+      "name": "Permintaan Masuk",
+      "icon": "menu-icon tf-icons ti ti-mail-forward",
+      "slug": "user.incoming-requests",
+      "excludeRole": "admin"
+    },
+    {
+      "url": "access-requests",
+      "name": "Status Permohonan",
+      "icon": "menu-icon tf-icons ti ti-file-certificate",
+      "slug": "user.access-requests.index",
+      "excludeRole": "admin"
+    },
+    {
+      "url": "my-services",
+      "name": "Layanan Saya",
+      "icon": "menu-icon tf-icons ti ti-clipboard-list",
+      "slug": "user.my-services.index",
+      "excludeRole": "admin"
+    },
+    {
+      "url": "admin/access-requests",
+      "name": "Permohonan Akses API",
+      "icon": "menu-icon tf-icons ti ti-key",
+      "slug": "access-requests.index",
+      "permission": "manage_catalogs"
+    },
+    {
+      "url": "api-clients",
+      "name": "Kelola API Keys",
+      "icon": "menu-icon tf-icons ti ti-shield-lock",
+      "slug": "api-clients.index",
+      "permission": "manage_api_keys"
+    },
+    {
+      "menuHeader": "Monitoring & Aktivitas"
+    },
+    {
+      "url": "api-logs",
+      "name": "Monitoring API",
+      "icon": "menu-icon tf-icons ti ti-chart-bar",
+      "slug": "api-logs.*",
+      "permission": "view_api_logs"
+    },
+    {
+      "menuHeader": "Utilitas",
+      "permission": "use_code_generator"
+    },
+    {
+      "url": "admin/code-generator",
+      "name": "Code Generator",
+      "icon": "menu-icon tf-icons ti ti-wand",
+      "slug": "admin.code-generator",
+      "permission": "use_code_generator"
+    },
+    {
+      "menuHeader": "Pusat Bantuan"
+    },
+    {
+      "url": "documentation",
+      "name": "Panduan Integrasi",
+      "icon": "menu-icon tf-icons ti ti-book",
+      "slug": "documentation.index",
+      "permission": "view_documentation"
+    },
+    {
+      "url": "tickets",
+      "name": "Tiket Bantuan",
+      "icon": "menu-icon tf-icons ti ti-help-circle",
+      "slug": "tickets.index",
+      "excludeRole": "admin"
+    },
+    {
+      "url": "admin/tickets",
+      "name": "Kelola Tiket Bantuan",
+      "icon": "menu-icon tf-icons ti ti-messages",
+      "slug": "admin.tickets.index",
+      "permission": "manage_tickets"
+    },
+    {
+      "menuHeader": "Administrator",
+      "permission": "menu_admin_area"
+    },
+    {
+      "url": "admin/announcements",
+      "name": "Pengumuman",
+      "icon": "menu-icon tf-icons ti ti-speakerphone",
+      "slug": "admin.announcements.index",
+      "permission": "manage_announcements"
+    },
+    {
+      "url": "admin/confirm-registrations",
+      "name": "Konfirmasi Pendaftaran",
+      "icon": "menu-icon tf-icons ti ti-user-check",
+      "slug": "admin.confirm-registrations",
+      "permission": "confirm_registrations"
+    },
+    {
+      "url": "admin/users",
+      "name": "Data User",
+      "icon": "menu-icon tf-icons ti ti-users",
+      "slug": "users.*",
+      "permission": "manage_users"
+    },
+    {
+      "url": "admin/roles-permissions",
+      "name": "Hak Akses & Role",
+      "icon": "menu-icon tf-icons ti ti-lock",
+      "slug": "roles-permissions.index",
+      "permission": "manage_users"
+    },
+    {
+      "menuHeader": "Pengaturan",
+      "permission": "manage_landing_page"
+    },
+    {
+      "url": "admin/landing/footer",
+      "name": "Footer",
+      "icon": "menu-icon tf-icons ti ti-layout-bottombar",
+      "slug": "admin.landing.footer",
+      "permission": "manage_landing_page"
+    }
+  ]
+}
