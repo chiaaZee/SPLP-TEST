@@ -22,7 +22,7 @@ $tag-max-width: auto !default;
 //! Tagify $tag-bg custom color to match with dark and light layout
 $tag-bg: rgb(light.$text-light, 0.5) !default;
 
-@import '@yaireo/tagify/src/tagify';
+@import '@yaireo/tagify/src/tagify.scss';
 
 @import 'tagify-users-list';
 @import 'tagify-inline-suggestion';

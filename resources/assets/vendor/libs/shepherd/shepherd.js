@@ -1,4 +1,4 @@
-import Shepherd from 'shepherd.js/dist/js/shepherd';
+import Shepherd from 'shepherd.js';
 
 try {
   window.Shepherd = Shepherd;

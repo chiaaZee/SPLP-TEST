@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite';
 import tailwindcss from '@tailwindcss/vite'
 import laravel from 'laravel-vite-plugin';
-import html from '@rollup/plugin-html';
 import { glob } from 'glob';
 
 /**
@@ -54,7 +53,11 @@ function libsWindowAssignment() {
 }
 
 export default defineConfig({
+  server: {
+    host: '127.0.0.1',
+  },
   plugins: [
+    tailwindcss(),
     laravel({
       input: [
         'resources/css/app.css',
@@ -71,7 +74,6 @@ export default defineConfig({
       ],
       refresh: true
     }),
-    html(),
     libsWindowAssignment()
   ],
   css: {

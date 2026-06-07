@@ -250,6 +250,11 @@ class GatewayController extends Controller
                 $headers['Authorization'] = 'Bearer ' . $catalog->target_token;
             }
 
+            // Inject X-API-KEY if targeting Lumajang Satu Data portal
+            if (str_contains($targetUrl, 'satudata.lumajangkab.go.id')) {
+                $headers['X-API-KEY'] = $catalog->target_token ?: 'sata_lmj';
+            }
+
             // Log
             \Illuminate\Support\Facades\Log::info("Gateway Forwarding", [
                 'target' => $targetUrl,

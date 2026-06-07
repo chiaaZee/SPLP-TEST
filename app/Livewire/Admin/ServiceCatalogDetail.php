@@ -117,11 +117,16 @@ class ServiceCatalogDetail extends Component
 
         foreach ($boundClients as $client) {
              if (!empty($client->mapping_config['skpd_code'])) {
-                 $code = $client->mapping_config['skpd_code'];
-                 if (isset($agencyCodeMap[$code])) {
-                     $agencyId = $agencyCodeMap[$code];
-                     if (!isset($agencyMap[$agencyId]) && isset($allAgencies[$agencyId])) {
-                         $agencyMap[$agencyId] = $allAgencies[$agencyId];
+                 $codes = $client->mapping_config['skpd_code'];
+                 if (!is_array($codes)) {
+                     $codes = [$codes];
+                 }
+                 foreach ($codes as $code) {
+                     if (is_scalar($code) && isset($agencyCodeMap[$code])) {
+                          $agencyId = $agencyCodeMap[$code];
+                          if (!isset($agencyMap[$agencyId]) && isset($allAgencies[$agencyId])) {
+                              $agencyMap[$agencyId] = $allAgencies[$agencyId];
+                          }
                      }
                  }
              }
@@ -234,9 +239,14 @@ class ServiceCatalogDetail extends Component
             $agencyCodeMap = Agency::where('status', 'active')->pluck('id', 'code')->toArray();
             foreach ($clients as $client) {
                 if (!empty($client->mapping_config['skpd_code'])) {
-                    $code = $client->mapping_config['skpd_code'];
-                    if (isset($agencyCodeMap[$code])) {
-                         $connectedAgencyIds[] = $agencyCodeMap[$code];
+                    $codes = $client->mapping_config['skpd_code'];
+                    if (!is_array($codes)) {
+                        $codes = [$codes];
+                    }
+                    foreach ($codes as $code) {
+                        if (is_scalar($code) && isset($agencyCodeMap[$code])) {
+                             $connectedAgencyIds[] = $agencyCodeMap[$code];
+                        }
                     }
                 }
             }

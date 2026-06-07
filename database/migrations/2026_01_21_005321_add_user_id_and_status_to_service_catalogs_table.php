@@ -28,7 +28,9 @@ return new class extends Migration
         });
 
         // Update Enum values
-        DB::statement("ALTER TABLE service_catalogs MODIFY COLUMN status ENUM('active', 'inactive', 'draft', 'pending', 'rejected') DEFAULT 'active'");
+        if (\DB::getDriverName() !== 'sqlite') {
+            \DB::statement("ALTER TABLE service_catalogs MODIFY COLUMN status ENUM('active', 'inactive', 'draft', 'pending', 'rejected') DEFAULT 'active'");
+        }
     }
 
     /**
@@ -43,6 +45,8 @@ return new class extends Migration
         });
 
         // Revert Enum is tricky if data exists with new values, but for down:
-        DB::statement("ALTER TABLE service_catalogs MODIFY COLUMN status ENUM('active', 'inactive', 'draft') DEFAULT 'active'");
+        if (\DB::getDriverName() !== 'sqlite') {
+            \DB::statement("ALTER TABLE service_catalogs MODIFY COLUMN status ENUM('active', 'inactive', 'draft') DEFAULT 'active'");
+        }
     }
 };

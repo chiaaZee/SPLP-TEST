@@ -73,7 +73,8 @@
       "permission": "manage_api_keys"
     },
     {
-      "menuHeader": "Monitoring & Aktivitas"
+      "menuHeader": "Monitoring & Aktivitas",
+      "permission": "view_api_logs"
     },
     {
       "url": "api-logs",

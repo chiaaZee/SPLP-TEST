@@ -29,6 +29,22 @@ class User extends Authenticatable
         'status',
     ];
 
+    protected static function booted()
+    {
+        static::saved(function ($user) {
+            if ($user->role) {
+                $roleName = strtolower($user->role);
+                try {
+                    if (!$user->hasRole($roleName)) {
+                        $user->syncRoles($roleName);
+                    }
+                } catch (\Exception $e) {
+                    // Fail silently during migrations/seeding if Spatie tables don't exist yet
+                }
+            }
+        });
+    }
+
     public function agency()
     {
         return $this->belongsTo(Agency::class);

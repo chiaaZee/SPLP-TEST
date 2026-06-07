@@ -15,16 +15,18 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         \App\Models\User::updateOrCreate(
-            ['email' => 'ishaqhabibi@lumajangkab.go.id'],
+            ['email' => 'syafiah@mail.com'],
             [
                 'name' => 'Administrator',
-                'password' => 'password', // Will be hashed by model cast
+                'password' => 'anjay123', // Will be hashed by model cast
                 'role' => 'admin',
             ]
         );
 
         $this->call([
+            RolePermissionSeeder::class,
             AgencySeeder::class,
+            ServiceSeeder::class,
         ]);
     }
 }

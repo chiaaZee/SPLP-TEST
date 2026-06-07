@@ -14,7 +14,9 @@ return new class extends Migration
     {
         // Force update enum to include 'suspended'
         // Using raw statement to bypass any Schema builder limitations
-        DB::statement("ALTER TABLE users MODIFY COLUMN status ENUM('active', 'pending', 'inactive', 'rejected', 'suspended') DEFAULT 'pending'");
+        if (DB::getDriverName() !== 'sqlite') {
+            DB::statement("ALTER TABLE users MODIFY COLUMN status ENUM('active', 'pending', 'inactive', 'rejected', 'suspended') DEFAULT 'pending'");
+        }
     }
 
     /**
@@ -24,6 +26,8 @@ return new class extends Migration
     {
         // Revert to original enum list (removing 'suspended')
         // WARNING: This could truncate data if any user is currently suspended.
-        DB::statement("ALTER TABLE users MODIFY COLUMN status ENUM('active', 'pending', 'inactive', 'rejected') DEFAULT 'pending'");
+        if (DB::getDriverName() !== 'sqlite') {
+            DB::statement("ALTER TABLE users MODIFY COLUMN status ENUM('active', 'pending', 'inactive', 'rejected') DEFAULT 'pending'");
+        }
     }
 };

@@ -18,7 +18,7 @@ return new class extends Migration
         $permission = Permission::firstOrCreate(['name' => 'manage_announcements', 'guard_name' => 'web']);
 
         // Assign to Admin
-        $admin = Role::findByName('admin');
+        $admin = Role::where('name', 'admin')->where('guard_name', 'web')->first();
         if ($admin) {
             $admin->givePermissionTo($permission);
         }

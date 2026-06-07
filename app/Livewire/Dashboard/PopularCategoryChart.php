@@ -26,8 +26,8 @@ class PopularCategoryChart extends Component
 
         if ($isAdmin) {
              // Admin: Count services per category
-             $this->categoryStats = \App\Models\ServiceCategory::withCount('services')
-                ->having('services_count', '>', 0)
+             $this->categoryStats = \App\Models\ServiceCategory::has('services')
+                ->withCount('services')
                 ->get()
                 ->map(function ($cat) {
                     return ['name' => $cat->name, 'total' => $cat->services_count];

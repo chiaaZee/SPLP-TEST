@@ -12,7 +12,9 @@ return new class extends Migration {
     public function up(): void
     {
         // Add 'rejected' to the enum values
-        DB::statement("ALTER TABLE users MODIFY COLUMN status ENUM('active', 'pending', 'inactive', 'rejected') DEFAULT 'pending'");
+        if (DB::getDriverName() !== 'sqlite') {
+            DB::statement("ALTER TABLE users MODIFY COLUMN status ENUM('active', 'pending', 'inactive', 'rejected') DEFAULT 'pending'");
+        }
     }
 
     /**
@@ -21,6 +23,8 @@ return new class extends Migration {
     public function down(): void
     {
         // Revert to original enum values (careful as this might truncate 'rejected' data)
-        DB::statement("ALTER TABLE users MODIFY COLUMN status ENUM('active', 'pending', 'inactive') DEFAULT 'pending'");
+        if (DB::getDriverName() !== 'sqlite') {
+            DB::statement("ALTER TABLE users MODIFY COLUMN status ENUM('active', 'pending', 'inactive') DEFAULT 'pending'");
+        }
     }
 };

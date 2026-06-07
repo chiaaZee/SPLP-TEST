@@ -72,9 +72,14 @@ class StatsCards extends Component
 
                 foreach ($clients as $client) {
                     if (!empty($client->mapping_config['skpd_code'])) {
-                        $code = $client->mapping_config['skpd_code'];
-                        if (isset($agencyCodeMap[$code])) {
-                            $connectedAgencyIds[] = $agencyCodeMap[$code];
+                        $codes = $client->mapping_config['skpd_code'];
+                        if (!is_array($codes)) {
+                            $codes = [$codes];
+                        }
+                        foreach ($codes as $code) {
+                            if (is_scalar($code) && isset($agencyCodeMap[$code])) {
+                                $connectedAgencyIds[] = $agencyCodeMap[$code];
+                            }
                         }
                     }
                 }

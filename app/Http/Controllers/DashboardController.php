@@ -121,8 +121,8 @@ class DashboardController extends Controller
 
         if ($isAdmin) {
              // Admin: Count services per category
-             $categoryStats = \App\Models\ServiceCategory::withCount('services')
-                ->having('services_count', '>', 0)
+             $categoryStats = \App\Models\ServiceCategory::has('services')
+                ->withCount('services')
                 ->get()
                 ->map(function ($cat) {
                     return ['name' => $cat->name, 'total' => $cat->services_count];
