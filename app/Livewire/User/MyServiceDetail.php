@@ -83,12 +83,7 @@ class MyServiceDetail extends Component
         // Pending Requests (Waiting for Owner)
         $this->pendingRequests = $this->service->accessRequests()
             ->with('user')
-            ->where(function($q) {
-                // Logic: Status pending OR (status pending_admin but owner approved date is null? - fallback)
-                // Assuming status 'pending' is the initial state where Owner needs to approve
-                $q->where('status', 'pending')
-                  ->whereNull('owner_approved_at');
-            })
+            ->where('status', 'pending_owner')
             ->latest()
             ->get();
     }

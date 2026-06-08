@@ -46,9 +46,9 @@ class PendingRegistrationsComposer
             }
 
             // 3. Pending Access Requests (Admin Only)
-            $pendingAccessRequestsCount = ServiceAccessRequest::where('status', 'pending')->count();
+            $pendingAccessRequestsCount = ServiceAccessRequest::where('status', 'pending_admin')->count();
             if ($pendingAccessRequestsCount > 0) {
-                $recentAccessRequests = ServiceAccessRequest::where('status', 'pending')
+                $recentAccessRequests = ServiceAccessRequest::where('status', 'pending_admin')
                     ->with(['user', 'serviceCatalog'])
                     ->orderBy('created_at', 'desc')
                     ->take(5)

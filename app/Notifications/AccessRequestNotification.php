@@ -42,6 +42,15 @@ class AccessRequestNotification extends Notification
                     'url' => route('user.my-services.show', $this->accessRequest->serviceCatalog->slug), // Link to Service Detail
                     'icon' => 'ti ti-user-plus'
                 ];
+            case 'new_request_admin':
+                // To Admin directly
+                return [
+                    'type' => 'access_request_admin',
+                    'title' => 'Permintaan Akses Baru',
+                    'message' => "{$requesterName} ({$agencyName}) meminta akses ke layanan '{$serviceName}'.",
+                    'url' => route('admin.access-requests.index'), // Link to Admin List
+                    'icon' => 'ti ti-user-plus'
+                ];
             case 'owner_approved':
                 // To Admin
                 return [

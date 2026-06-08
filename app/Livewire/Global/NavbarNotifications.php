@@ -43,7 +43,7 @@ class NavbarNotifications extends Component
                 ->take(10)
                 ->get();
 
-            $pendingRequests = ServiceAccessRequest::where('status', 'pending')
+            $pendingRequests = ServiceAccessRequest::where('status', 'pending_admin')
                 ->with(['user', 'serviceCatalog'])
                 ->latest()
                 ->take(10)

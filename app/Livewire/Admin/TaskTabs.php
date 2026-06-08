@@ -17,7 +17,7 @@ class TaskTabs extends Component
         // Counts
         $pendingUsersCount = User::where('status', 'pending')->count();
         $openTicketsCount = SupportTicket::where('status', 'open')->count();
-        $pendingRequestsCount = ServiceAccessRequest::where('status', 'pending')->count();
+        $pendingRequestsCount = ServiceAccessRequest::where('status', 'pending_admin')->count();
 
         return view('livewire.admin.task-tabs', [
             'pendingUsersCount' => $pendingUsersCount,

@@ -609,11 +609,11 @@ class ServiceCatalogController extends Controller
         // Check if pending request exists
         $exists = \App\Models\ServiceAccessRequest::where('user_id', auth()->id())
             ->where('service_catalog_id', $request->service_catalog_id)
-            ->whereIn('status', ['pending', 'approved'])
+            ->whereIn('status', ['pending_owner', 'pending_admin', 'approved'])
             ->exists();
 
         if ($exists) {
-            return response()->json(['message' => 'Anda sudah memiliki permintaan pending atau sudah disetujui uuntuk layanan ini.'], 422);
+            return response()->json(['message' => 'Anda sudah memiliki permintaan pending atau sudah disetujui untuk layanan ini.'], 422);
         }
 
         $filename = null;
@@ -626,13 +626,32 @@ class ServiceCatalogController extends Controller
             $file->move($destinationPath, $filename);
         }
 
-        \App\Models\ServiceAccessRequest::create([
+        $catalog = \App\Models\ServiceCatalog::find($request->service_catalog_id);
+        $status = $catalog->user_id ? 'pending_owner' : 'pending_admin';
+
+        $accessRequest = \App\Models\ServiceAccessRequest::create([
             'user_id' => auth()->id(),
             'service_catalog_id' => $request->service_catalog_id,
             'reason' => $request->reason ?? 'Lampiran Dokumen',
             'attachment' => $filename,
-            'status' => 'pending'
+            'status' => $status
         ]);
+
+        // Send notifications
+        if ($status === 'pending_owner') {
+            if ($catalog->user) {
+                $catalog->user->notify(new \App\Notifications\AccessRequestNotification($accessRequest, 'new_request'));
+            }
+        } else {
+            // Notify Admin
+            $admins = \App\Models\User::role('admin')->get();
+            if (!method_exists($admins, 'notify') && $admins->isEmpty()) {
+                $admins = \App\Models\User::where('role', 'admin')->get();
+            }
+            foreach ($admins as $admin) {
+                $admin->notify(new \App\Notifications\AccessRequestNotification($accessRequest, 'new_request_admin'));
+            }
+        }
 
         return response()->json(['message' => 'Dokumen permohonan berhasil dikirim. Admin akan meninjau permintaan Anda.']);
     }

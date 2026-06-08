@@ -19,7 +19,7 @@ class NotificationController extends Controller
             // Admin View: Task Dashboard
             $pendingUsers = User::where('status', 'pending')->with('agency')->latest()->get();
             $openTickets = SupportTicket::where('status', 'open')->with('user')->latest()->get();
-            $pendingRequests = ServiceAccessRequest::where('status', 'pending')->with(['user', 'serviceCatalog'])->latest()->get();
+            $pendingRequests = ServiceAccessRequest::where('status', 'pending_admin')->with(['user', 'serviceCatalog'])->latest()->get();
 
             return view('content.notifications.index_admin', compact('pendingUsers', 'openTickets', 'pendingRequests'));
         } else {
