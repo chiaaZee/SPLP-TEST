@@ -9,7 +9,7 @@
         'resources/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.scss',
         'resources/assets/vendor/libs/sweetalert2/sweetalert2.scss',
         'resources/assets/vendor/libs/select2/select2.scss',
-        'resources/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css'
+        'resources/assets/vendor/libs/@form-validation/form-validation.scss'
     ])
     <style>
         pre.json-result {
@@ -34,9 +34,9 @@
         'node_modules/datatables.net-buttons/js/buttons.print.js',
         'resources/assets/vendor/libs/sweetalert2/sweetalert2.js',
         'resources/assets/vendor/libs/select2/select2.js',
-        'resources/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js',
-        'resources/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js',
-        'resources/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js'
+        'resources/assets/vendor/libs/@form-validation/popular.js',
+        'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
+        'resources/assets/vendor/libs/@form-validation/auto-focus.js'
     ])
 @endsection
 

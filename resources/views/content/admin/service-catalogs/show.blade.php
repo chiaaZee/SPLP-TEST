@@ -7,7 +7,7 @@
   'resources/assets/vendor/libs/datatables-bs5/datatables.bootstrap5.scss',
   'resources/assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.scss',
   'resources/assets/vendor/libs/sweetalert2/sweetalert2.scss',
-  'resources/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css',
+  'resources/assets/vendor/libs/@form-validation/form-validation.scss',
   'resources/assets/vendor/libs/apex-charts/apex-charts.scss'
 ])
 <style>
@@ -65,8 +65,8 @@
         'resources/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js',
 
         'resources/assets/vendor/libs/sweetalert2/sweetalert2.js',
-        'resources/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js',
-        'resources/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js',
+        'resources/assets/vendor/libs/@form-validation/popular.js',
+        'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
         'resources/assets/vendor/libs/apex-charts/apexcharts.js'
     ])
 @endsection
@@ -141,6 +141,58 @@
                     new ApexCharts(document.getElementById('usageChart'), chartOptions).render();
                 }
             }
+
+            // Delete Catalog Handler
+            $(document).on('click', '.delete-catalog-btn', function () {
+                var catalogId = $(this).data('id');
+                var catalogName = $(this).data('name');
+
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Katalog \"" + catalogName + "\" beserta seluruh endpoint di dalamnya akan dihapus permanen!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#ea5455',
+                    cancelButtonColor: '#a8aaae',
+                    confirmButtonText: 'Ya, Hapus!',
+                    cancelButtonText: 'Batal',
+                    customClass: {
+                        confirmButton: 'btn btn-danger me-3',
+                        cancelButton: 'btn btn-label-secondary'
+                    },
+                    buttonsStyling: false
+                }).then(function (result) {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "{{ url('admin/service-catalogs') }}/" + catalogId,
+                            type: 'DELETE',
+                            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                            success: function (res) {
+                                Swal.fire({
+                                    title: 'Terhapus!',
+                                    text: res.message || 'Katalog berhasil dihapus.',
+                                    icon: 'success',
+                                    customClass: {
+                                        confirmButton: 'btn btn-success'
+                                    }
+                                }).then(function() {
+                                    window.location.href = "{{ route('service-catalogs.index') }}";
+                                });
+                            },
+                            error: function (err) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Gagal!',
+                                    text: err.responseJSON?.message || 'Terjadi kesalahan saat menghapus katalog.',
+                                    customClass: {
+                                        confirmButton: 'btn btn-primary'
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            });
         });
     </script>
 @endsection

@@ -20,7 +20,7 @@
         'resources/assets/vendor/libs/animate-css/animate.scss',
         'resources/assets/vendor/libs/sweetalert2/sweetalert2.scss',
         'resources/assets/vendor/libs/select2/select2.scss',
-        'resources/assets/vendor/libs/formvalidation/dist/css/formValidation.min.css',
+        'resources/assets/vendor/libs/@form-validation/form-validation.scss',
     ])
 @endsection
 
@@ -28,9 +28,9 @@
     @vite([
         'resources/assets/vendor/libs/sweetalert2/sweetalert2.js',
         'resources/assets/vendor/libs/select2/select2.js',
-        'resources/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js',
-        'resources/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js',
-        'resources/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js'
+        'resources/assets/vendor/libs/@form-validation/popular.js',
+        'resources/assets/vendor/libs/@form-validation/bootstrap5.js',
+        'resources/assets/vendor/libs/@form-validation/auto-focus.js'
     ])
 @endsection
 
@@ -76,6 +76,69 @@
                     },
                     error: function (err) {
                         Swal.fire({ icon: 'error', title: 'Error!', text: JSON.stringify(err.responseJSON.errors), showCancelButton: false });
+                    }
+                });
+            });
+
+            // Delete Catalog Handler
+            $(document).on('click', '.delete-catalog-btn', function () {
+                var catalogId = $(this).data('id');
+                var catalogName = $(this).data('name');
+                var card = $(this).closest('.col-md-6');
+
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Katalog \"" + catalogName + "\" beserta seluruh endpoint di dalamnya akan dihapus permanen!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#ea5455',
+                    cancelButtonColor: '#a8aaae',
+                    confirmButtonText: 'Ya, Hapus!',
+                    cancelButtonText: 'Batal',
+                    customClass: {
+                        confirmButton: 'btn btn-danger me-3',
+                        cancelButton: 'btn btn-label-secondary'
+                    },
+                    buttonsStyling: false
+                }).then(function (result) {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "{{ url('admin/service-catalogs') }}/" + catalogId,
+                            type: 'DELETE',
+                            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                            success: function (res) {
+                                Swal.fire({
+                                    toast: true,
+                                    position: 'top-end',
+                                    icon: 'success',
+                                    title: 'Terhapus!',
+                                    text: res.message || 'Katalog berhasil dihapus.',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    customClass: {
+                                        popup: 'colored-toast'
+                                    }
+                                });
+
+                                if (typeof Livewire !== 'undefined') {
+                                    Livewire.dispatch('refreshCatalogList');
+                                } else {
+                                    card.fadeOut(400, function() {
+                                        $(this).remove();
+                                    });
+                                }
+                            },
+                            error: function (err) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Gagal!',
+                                    text: err.responseJSON?.message || 'Terjadi kesalahan saat menghapus katalog.',
+                                    customClass: {
+                                        confirmButton: 'btn btn-primary'
+                                    }
+                                });
+                            }
+                        });
                     }
                 });
             });

@@ -72,6 +72,7 @@ class ServiceCatalogController extends Controller
         }
 
         $catalog = ServiceCatalog::create($input);
+        $catalog->load('agency', 'category');
 
         $html = view('content.admin.service-catalogs._catalog_card', compact('catalog'))->render();
 
@@ -165,8 +166,25 @@ class ServiceCatalogController extends Controller
     */
 
     /**
-     * Display the specified resource (Detail View with Endpoints).
+     * Remove the specified resource from storage.
      */
+    public function destroy($id)
+    {
+        $catalog = ServiceCatalog::where('slug', $id)->first() ?? ServiceCatalog::findOrFail($id);
+
+        // Delete cover image if exists
+        if ($catalog->cover_image && file_exists(public_path('/assets/img/service-catalogs/' . $catalog->cover_image))) {
+            @unlink(public_path('/assets/img/service-catalogs/' . $catalog->cover_image));
+        }
+
+        $catalog->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Katalog berhasil dihapus.'
+        ]);
+    }
+
     /**
      * Display the specified resource (Detail View with Endpoints).
      */

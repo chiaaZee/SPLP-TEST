@@ -86,6 +86,9 @@
                         <i class="ti ti-{{ $catalogData['status'] == 'active' ? 'player-pause' : 'player-play' }} me-1"></i>
                         {{ $catalogData['status'] == 'active' ? 'Nonaktifkan' : 'Aktifkan' }}
                     </button>
+                    <button class="btn btn-danger delete-catalog-btn" data-id="{{ $catalogData['slug'] }}" data-name="{{ $catalogData['name'] }}" data-redirect="true" wire:loading.attr="disabled">
+                        <i class="ti ti-trash me-1"></i> Hapus
+                    </button>
                     @endcan
                     <button class="btn btn-label-secondary" onclick="history.back()"><i class="ti ti-arrow-left me-1"></i> Kembali</button>
                 </div>

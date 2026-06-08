@@ -1,4 +1,4 @@
-<div class="col-md-6 col-lg-4 col-xl-3 animate__animated animate__fadeInUp" style="animation-duration: 0.5s; animation-delay: {{ $loop->iteration * 0.1 }}s">
+<div class="col-md-6 col-lg-4 col-xl-3 animate__animated animate__fadeInUp" style="animation-duration: 0.5s; animation-delay: {{ (isset($loop) ? $loop->iteration : 1) * 0.1 }}s">
     <div class="card h-100 border-0 shadow-sm hover-lift overflow-hidden position-relative group">
         <!-- Status Indicator Strip -->
         <!-- Status Indicator Strip -->
@@ -69,9 +69,14 @@
                 @endphp
 
                 @if($isAdmin)
-                    <a href="{{ route('service-catalogs.show', $catalog->slug) }}" class="btn btn-xs btn-primary rounded-pill waves-effect waves-light px-2">
-                        Details <i class="ti ti-arrow-right ms-1"></i>
-                    </a>
+                    <div class="d-flex gap-2">
+                        <a href="{{ route('service-catalogs.show', $catalog->slug) }}" class="btn btn-xs btn-primary rounded-pill waves-effect waves-light px-2">
+                            Details <i class="ti ti-arrow-right ms-1"></i>
+                        </a>
+                        <button type="button" class="btn btn-xs btn-label-danger rounded-pill delete-catalog-btn px-2" data-id="{{ $catalog->slug }}" data-name="{{ $catalog->name }}">
+                            <i class="ti ti-trash"></i>
+                        </button>
+                    </div>
                 @elseif($catalog->status === 'active')
                      @if($reqStatus == 'approved')
                         <a href="{{ route('service-catalogs.show', $catalog->slug) }}" class="btn btn-xs btn-label-success rounded-pill waves-effect px-2">
