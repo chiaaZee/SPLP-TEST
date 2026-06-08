@@ -20,6 +20,13 @@ class AnnouncementManager extends Component
     public $end_date;
     public $is_active = true;
 
+    public function mount()
+    {
+        if (!auth()->check() || !auth()->user()->hasRole('admin')) {
+            abort(403, 'Unauthorized.');
+        }
+    }
+
     protected $paginationTheme = 'bootstrap';
 
     protected $rules = [

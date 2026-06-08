@@ -33,6 +33,10 @@ class AccessRequestsTable extends Component
 
     public function mount($showBanner = true, $statusFilter = 'pending')
     {
+        if (!auth()->check() || !auth()->user()->hasRole('admin')) {
+            abort(403, 'Unauthorized.');
+        }
+
         $this->showBanner = $showBanner;
         $this->statusFilter = $statusFilter;
 

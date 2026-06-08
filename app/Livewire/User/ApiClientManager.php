@@ -274,5 +274,5 @@ class ApiClientManager extends Component
     }
 
      // Temp property to store perms logic in PHP state
-     protected $catalogPermissions = [];
+     public $catalogPermissions = [];
 }

@@ -31,6 +31,14 @@ class ServiceCatalogList extends Component
             ->withCount('endpoints')
             ->latest();
 
+        if (Auth::check() && !Auth::user()->hasRole('admin')) {
+            $query->where(function($q) {
+                $q->where('status', 'active')
+                  ->orWhere('user_id', Auth::id())
+                  ->orWhere('agency_id', Auth::user()->agency_id);
+            });
+        }
+
         if ($this->search) {
             $query->where(function($q) {
                 $q->where('name', 'like', '%' . $this->search . '%')

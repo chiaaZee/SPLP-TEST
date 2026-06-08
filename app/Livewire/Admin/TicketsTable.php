@@ -19,6 +19,13 @@ class TicketsTable extends Component
 
     public $showBanner = true;
 
+    public function mount()
+    {
+        if (!auth()->check() || !auth()->user()->hasRole('admin')) {
+            abort(403, 'Unauthorized.');
+        }
+    }
+
     // Reply Logic
     public $replyingTicket = null;
     public $replyMessage = '';

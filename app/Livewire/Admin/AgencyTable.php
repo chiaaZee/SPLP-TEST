@@ -48,6 +48,10 @@ class AgencyTable extends Component
 
     public function mount()
     {
+        if (!auth()->check() || !auth()->user()->hasRole('admin')) {
+            abort(403, 'Unauthorized.');
+        }
+
         // Capture 'filter' from query string if present
         $filter = request()->query('filter');
         if ($filter === 'connected') {

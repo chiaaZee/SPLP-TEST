@@ -20,6 +20,13 @@ class ServiceVerificationTable extends Component
 
     protected $listeners = ['refreshTable' => '$refresh'];
 
+    public function mount()
+    {
+        if (!auth()->check() || !auth()->user()->hasRole('admin')) {
+            abort(403, 'Unauthorized.');
+        }
+    }
+
     public function updatingSearch()
     {
         $this->resetPage();
@@ -101,8 +108,22 @@ class ServiceVerificationTable extends Component
         }
     }
 
-    public function downloadUAT($path)
+    public function downloadUAT($id)
     {
-        return response()->download(storage_path('app/public/' . $path));
+        if (!auth()->check() || !auth()->user()->hasRole('admin')) {
+            abort(403, 'Unauthorized.');
+        }
+
+        $service = ServiceCatalog::findOrFail($id);
+        if (!$service->uat_document_path) {
+            abort(404, 'UAT Document not found.');
+        }
+
+        $path = storage_path('app/public/' . $service->uat_document_path);
+        if (!file_exists($path)) {
+            abort(404, 'File not found on server.');
+        }
+
+        return response()->download($path);
     }
 }

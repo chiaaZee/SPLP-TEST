@@ -25,6 +25,13 @@ class ConfirmRegistrationsTable extends Component
     // UI Options
     public $showBanner = true;
 
+    public function mount()
+    {
+        if (!auth()->check() || !auth()->user()->hasRole('admin')) {
+            abort(403, 'Unauthorized.');
+        }
+    }
+
     // Listeners for SweetAlert events
     protected $listeners = [
         'refreshTable' => '$refresh',

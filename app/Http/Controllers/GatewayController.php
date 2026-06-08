@@ -44,7 +44,7 @@ class GatewayController extends Controller
              }
 
              // 2. Validate Timestamp (Rewrite logic slightly for reusability if possible, but duplication is safer for now to avoid breaking main flow)
-             if (abs(time() - $timestamp) > 300) {
+             if (!is_numeric($timestamp) || abs(time() - (int)$timestamp) > 300) {
                  return \App\Helpers\ApiResponse::error(
                      'Token Expired',
                      'Timestamp request sudah kadaluarsa (maksimal 5 menit).',
@@ -139,7 +139,7 @@ class GatewayController extends Controller
             }
 
             // Verify Timestamp (Prevent Replay Attack, +/- 5 minutes)
-            if (abs(time() - $timestamp) > 300) {
+            if (!is_numeric($timestamp) || abs(time() - (int)$timestamp) > 300) {
                 return response()->json(['message' => 'Unauthorized: Request Timestamp Expired'], 401);
             }
 
@@ -216,14 +216,20 @@ class GatewayController extends Controller
                 ], 403);
             }
 
-            // Inject Mapping Config
+            // Inject Mapping Config (Only if catalog requires mapping)
             $mappingConfig = $client->mapping_config ?? [];
 
-            if (!empty($mappingConfig)) {
+            if (!empty($mappingConfig) && $catalog->requires_mapping) {
                  $currentQuery = $request->query();
                  foreach ($mappingConfig as $key => $value) {
                      if (empty($value)) continue;
-                     $currentQuery[$key] = $value;
+                     
+                     // Map 'skpd_code' to catalog's custom mapping_field if present
+                     $paramKey = ($key === 'skpd_code' && !empty($catalog->mapping_field)) 
+                         ? $catalog->mapping_field 
+                         : $key;
+                         
+                     $currentQuery[$paramKey] = $value;
                  }
                  $qs = http_build_query($currentQuery);
             }
@@ -243,6 +249,7 @@ class GatewayController extends Controller
         try {
             $headers = collect($request->header())
                 ->except(['host', 'content-length', 'x-splp-client-id', 'x-splp-timestamp', 'x-splp-signature'])
+                ->map(fn($val) => is_array($val) ? implode(', ', $val) : $val)
                 ->toArray();
 
             // Inject Target Token

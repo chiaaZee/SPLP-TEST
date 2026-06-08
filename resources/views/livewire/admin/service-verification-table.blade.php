@@ -40,7 +40,7 @@
                             </td>
                             <td>
                                 @if($service->uat_document_path)
-                                    <button wire:click="downloadUAT('{{ $service->uat_document_path }}')" class="btn btn-xs btn-label-primary">
+                                    <button wire:click="downloadUAT({{ $service->id }})" class="btn btn-xs btn-label-primary">
                                         <i class="ti ti-download me-1"></i> UAT
                                     </button>
                                 @else

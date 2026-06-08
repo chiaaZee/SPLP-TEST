@@ -208,8 +208,9 @@ class ServiceCatalogController extends Controller
         $rejectionNote = null;
         $user = auth()->user();
         $isAdmin = $user->hasRole('admin');
+        $isOwner = $serviceCatalog->user_id == $user->id;
 
-        if (!$isAdmin) {
+        if (!$isAdmin && !$isOwner) {
              // Check if user has explicit permission via ServiceAccessRequest
              $access = \App\Models\ServiceAccessRequest::where('user_id', $user->id)
                  ->where('service_catalog_id', $serviceCatalog->id)
@@ -240,7 +241,7 @@ class ServiceCatalogController extends Controller
         }
 
         // Filter Visibility
-        if (!$isAdmin) {
+        if (!$isAdmin && !$hasAccess) {
              $query->where('is_public', true);
         }
 

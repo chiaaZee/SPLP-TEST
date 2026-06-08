@@ -39,6 +39,13 @@ class UserTable extends Component
         'suspendConfirmed' => 'suspendUser'
     ];
 
+    public function mount()
+    {
+        if (!auth()->check() || !auth()->user()->hasRole('admin')) {
+            abort(403, 'Unauthorized.');
+        }
+    }
+
     public function updatedSearch()
     {
         $this->resetPage();

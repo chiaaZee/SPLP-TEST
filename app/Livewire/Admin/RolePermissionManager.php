@@ -14,6 +14,10 @@ class RolePermissionManager extends Component
 
     public function mount()
     {
+        if (!auth()->check() || !auth()->user()->hasRole('admin')) {
+            abort(403, 'Unauthorized.');
+        }
+
         $this->loadData();
     }
 

@@ -132,6 +132,9 @@ class MyServiceList extends Component
         if ($this->editingId) {
             // Update Logic
             $service = ServiceCatalog::find($this->editingId);
+            if (!$service || $service->user_id !== auth()->id() || $service->status !== 'rejected') {
+                abort(403, 'Unauthorized action.');
+            }
             $service->update(array_merge($data, [
                 'rejection_reason' => null // Clear reason
             ]));

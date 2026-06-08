@@ -19,6 +19,13 @@ class RejectedRegistrationsTable extends Component
 
     public $showBanner = true;
 
+    public function mount()
+    {
+        if (!auth()->check() || !auth()->user()->hasRole('admin')) {
+            abort(403, 'Unauthorized.');
+        }
+    }
+
     public function updatedSearch()
     {
         $this->resetPage();

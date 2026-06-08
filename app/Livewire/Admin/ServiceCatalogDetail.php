@@ -47,6 +47,7 @@ class ServiceCatalogDetail extends Component
     public $chartData = [];
     public $catalogData = [];
     public $hasAccessOrAdmin = false;
+    public $canManage = false;
     public $agencies = [];
     public $categories = [];
 
@@ -198,7 +199,18 @@ class ServiceCatalogDetail extends Component
 
         // Check permissions
         $user = auth()->user();
-        $this->hasAccessOrAdmin = $user->hasRole('admin') || ($this->catalog->agency_id == $user->agency_id);
+        $hasApprovedRequest = \App\Models\ServiceAccessRequest::where('user_id', $user->id)
+            ->where('service_catalog_id', $this->catalog->id)
+            ->where('status', 'approved')
+            ->exists();
+        $this->hasAccessOrAdmin = $user->hasRole('admin') 
+            || ($this->catalog->agency_id == $user->agency_id)
+            || ($this->catalog->user_id == $user->id)
+            || $hasApprovedRequest;
+
+        $this->canManage = $user->hasRole('admin') 
+            || ($this->catalog->agency_id == $user->agency_id)
+            || ($this->catalog->user_id == $user->id);
     }
 
     public function loadCatalog()
@@ -287,6 +299,10 @@ class ServiceCatalogDetail extends Component
     #[On('toggleStatus')]
     public function toggleStatus()
     {
+        if (!$this->canManage) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $newStatus = $this->catalog->status === 'active' ? 'inactive' : 'active';
         $this->catalog->update(['status' => $newStatus]);
 
@@ -298,6 +314,10 @@ class ServiceCatalogDetail extends Component
     // Catalog Management
     public function editCatalog()
     {
+        if (!$this->canManage) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $this->edit_agency_id = $this->catalog->agency_id;
         $this->edit_category_id = $this->catalog->category_id;
         $this->edit_name = $this->catalog->name;
@@ -320,6 +340,10 @@ class ServiceCatalogDetail extends Component
 
     public function updateCatalog()
     {
+        if (!$this->canManage) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $validated = $this->validate([
             'edit_agency_id' => 'required|exists:agencies,id',
             'edit_category_id' => 'nullable|exists:service_categories,id',
@@ -403,6 +427,10 @@ class ServiceCatalogDetail extends Component
     // Modal Management
     public function createEndpoint()
     {
+        if (!$this->canManage) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $this->resetForm();
         $this->isEditMode = false;
         $this->dispatch('open-endpoint-modal');
@@ -410,6 +438,10 @@ class ServiceCatalogDetail extends Component
 
     public function editEndpoint($id)
     {
+        if (!$this->canManage) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $endpoint = ServiceEndpoint::findOrFail($id);
         $this->endpointId = $endpoint->id;
         $this->name = $endpoint->name;
@@ -459,6 +491,10 @@ class ServiceCatalogDetail extends Component
     // CRUD Operations
     public function saveEndpoint()
     {
+        if (!$this->canManage) {
+            abort(403, 'Unauthorized action.');
+        }
+
         // Pre-process URL
         $processingUrl = $this->url;
         if ($this->catalog->base_url && !filter_var($processingUrl, FILTER_VALIDATE_URL)) {
@@ -550,7 +586,12 @@ class ServiceCatalogDetail extends Component
     #[On('deleteEndpoint')]
     public function deleteEndpoint($id)
     {
-        ServiceEndpoint::find($id)->delete();
+        if (!$this->canManage) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $endpoint = ServiceEndpoint::where('id', $id)->where('service_catalog_id', $this->catalog->id)->firstOrFail();
+        $endpoint->delete();
         $this->dispatch('swal:toast', type: 'success', message: 'Endpoint berhasil dihapus.');
     }
 
@@ -563,8 +604,8 @@ class ServiceCatalogDetail extends Component
                       ->orWhere('path', 'like', '%' . $this->search . '%')
                       ->orWhere('method', 'like', '%' . $this->search . '%');
             })
-            // Filter: Jika bukan admin, hanya tampilkan endpoint publik
-            ->when(!$user->hasRole('admin'), function ($query) {
+            // Filter: Jika bukan admin/pemilik/pengguna terverifikasi, hanya tampilkan endpoint publik
+            ->when(!$this->hasAccessOrAdmin, function ($query) {
                 $query->where('is_public', 1);
             })
             ->orderBy('created_at', 'desc')

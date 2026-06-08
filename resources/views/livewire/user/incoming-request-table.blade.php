@@ -48,7 +48,7 @@
                                 {{ $request->reason }}
                             </span>
                             @if($request->attachment)
-                                <a href="{{ Storage::url($request->attachment) }}" target="_blank" class="ms-1 text-primary"><i class="ti ti-link"></i> Doc</a>
+                                <a href="{{ asset('uploads/access_requests/' . $request->attachment) }}" target="_blank" class="ms-1 text-primary"><i class="ti ti-link"></i> Doc</a>
                             @endif
                         </td>
                         <td>
