@@ -627,7 +627,9 @@ class ServiceCatalogController extends Controller
         }
 
         $catalog = \App\Models\ServiceCatalog::find($request->service_catalog_id);
-        $status = $catalog->user_id ? 'pending_owner' : 'pending_admin';
+        $owner = $catalog->user;
+        $hasDinasOwner = $owner && $owner->role !== 'admin';
+        $status = $hasDinasOwner ? 'pending_owner' : 'pending_admin';
 
         $accessRequest = \App\Models\ServiceAccessRequest::create([
             'user_id' => auth()->id(),
