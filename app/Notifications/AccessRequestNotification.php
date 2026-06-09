@@ -48,7 +48,7 @@ class AccessRequestNotification extends Notification
                     'type' => 'access_request_admin',
                     'title' => 'Permintaan Akses Baru',
                     'message' => "{$requesterName} ({$agencyName}) meminta akses ke layanan '{$serviceName}'.",
-                    'url' => route('admin.access-requests.index'), // Link to Admin List
+                    'url' => route('access-requests.index'), // Link to Admin List
                     'icon' => 'ti ti-user-plus'
                 ];
             case 'owner_approved':
@@ -57,7 +57,7 @@ class AccessRequestNotification extends Notification
                     'type' => 'access_request_admin',
                     'title' => 'Akses Disetujui Pemilik',
                     'message' => "Pemilik layanan menyetujui akses '{$serviceName}' untuk {$requesterName}. Menunggu persetujuan Admin.",
-                    'url' => route('admin.access-requests.index'), // Link to Admin List
+                    'url' => route('access-requests.index'), // Link to Admin List
                     'icon' => 'ti ti-checkbox'
                 ];
             case 'final_approval':
