@@ -134,8 +134,10 @@
                              {{ $req->created_at->format('d M Y, H:i') }}
                         </td>
                         <td>
-                            @if($req->status == 'pending')
-                                <span class="badge bg-label-primary">Pending</span>
+                            @if($req->status == 'pending' || $req->status == 'pending_admin')
+                                <span class="badge bg-label-primary">Pending Admin</span>
+                            @elseif($req->status == 'pending_owner')
+                                <span class="badge bg-label-warning">Pending Owner</span>
                             @elseif($req->status == 'approved')
                                 <span class="badge bg-label-success">Disetujui</span>
                             @elseif($req->status == 'rejected')
@@ -145,7 +147,7 @@
                             @endif
                         </td>
                         <td>
-                            @if($req->status == 'pending')
+                            @if($req->status == 'pending' || $req->status == 'pending_admin')
                             <button type="button" class="btn btn-sm btn-label-primary" wire:click="openApprovalModal({{ $req->id }})">
                                 <i class="ti ti-eye me-1"></i> Detail
                             </button>

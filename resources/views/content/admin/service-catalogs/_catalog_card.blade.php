@@ -82,10 +82,10 @@
                         <a href="{{ route('service-catalogs.show', $catalog->slug) }}" class="btn btn-xs btn-label-success rounded-pill waves-effect px-2">
                             <i class="ti ti-book-2 me-1"></i> Documentation
                         </a>
-                    @elseif($reqStatus == 'pending')
-                         <span class="badge bg-label-warning rounded-pill px-2"><i class="ti ti-clock me-1"></i> Pending</span>
+                    @elseif($reqStatus == 'pending' || $reqStatus == 'pending_owner' || $reqStatus == 'pending_admin')
+                         <span class="badge bg-label-warning rounded-pill px-2" data-bs-toggle="tooltip" title="{{ $reqStatus == 'pending_owner' ? 'Menunggu Persetujuan Pemilik' : ($reqStatus == 'pending_admin' ? 'Verifikasi Admin SPLPD' : 'Pending') }}"><i class="ti ti-clock me-1"></i> Pending</span>
                     @elseif($reqStatus == 'rejected')
-                        <button class="btn btn-xs btn-label-danger rounded-pill request-access-btn px-2" data-id="{{ $catalog->id }}">
+                        <button class="btn btn-xs btn-label-danger rounded-pill request-access-btn px-2" data-id="{{ $catalog->id }}" data-name="{{ $catalog->name }}">
                             <i class="ti ti-refresh me-1"></i> Re-apply
                         </button>
                     @else
