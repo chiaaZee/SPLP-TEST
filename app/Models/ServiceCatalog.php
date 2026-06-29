@@ -123,21 +123,15 @@ class ServiceCatalog extends Model
 
     public function getHealthStatsAttribute()
     {
-        $query = $this->apiLogs()->where('created_at', '>=', now()->subHours(24));
+        $query = $this->apiLogs();
+
+        // Scope stats to the user if they are not an admin
+        if (auth()->check() && !auth()->user()->hasRole('admin')) {
+            $query->where('user_id', auth()->id());
+        }
 
         $total = $query->count();
-        $errors = $query->clone()->where('status_code', '>=', 400)->count(); // Clone to avoid mutation if shared, though here new query
-
-        // Optimization: Single query with conditional count?
-        // $stats = $this->apiLogs()
-        //     ->where('created_at', '>=', now()->subHours(24))
-        //     ->selectRaw('count(*) as total, sum(case when status_code >= 400 then 1 else 0 end) as errors')
-        //     ->first();
-        // $total = $stats->total; $errors = $stats->errors;
-
-        // Using relationship might be cached if loaded, but here we need fresh 24h.
-        // Let's stick to clean queries for now or optimize if heavy.
-        // Re-using the query builder logic for clarity.
+        $errors = $query->clone()->where('status_code', '>=', 400)->count();
 
         $errorRate = $total > 0 ? ($errors / $total) * 100 : 0;
         $successRate = 100 - $errorRate;
@@ -146,14 +140,12 @@ class ServiceCatalog extends Model
         $color = 'success';
         $icon = 'activity-heartbeat';
 
-        // Logic re-verified: warning replaced by Issues.
-
         $avgLatency = round($query->clone()->avg('duration_ms') ?? 0);
 
         if ($total == 0) {
-            $status = 'no data'; // Lowercase as per user request and previous style
+            $status = 'no data';
             $color = 'secondary';
-            $icon = 'help-circle'; // Or any neutral icon
+            $icon = 'help-circle';
         } else {
             if ($errorRate > 50) {
                 $status = 'Critical';

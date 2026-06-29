@@ -39,10 +39,10 @@
   position: relative !important;
 }
 
-.table-responsive:has(.dropdown-toggle.show),
+/* .table-responsive:has(.dropdown-toggle.show),
 .table-responsive:has(.dropdown-menu.show) {
   overflow: visible !important;
-}
+} */
 
 .card:has(.dropdown-toggle.show),
 .card:has(.dropdown-menu.show) {

@@ -44,14 +44,14 @@
                                 <span class="badge badge-center rounded-pill bg-label-info me-2"><i class="ti ti-chart-bar"></i></span>
                                 <span class="fw-bold fs-5" x-text="current.toLocaleString()">0</span>
                             </div>
-                            <small class="text-muted d-block">Hits (24h)</small>
+                            <small class="text-muted d-block">Hits</small>
                         </div>
                         <div class="col-6" x-data="rollingCounter({{ $catalog->error_count }})">
                             <div class="d-flex align-items-center mb-1">
                                     <span class="badge badge-center rounded-pill bg-label-danger me-2"><i class="ti ti-alert-triangle"></i></span>
                                 <span class="fw-bold fs-5" x-text="current.toLocaleString()">0</span>
                             </div>
-                            <small class="text-muted d-block">Errors (24h)</small>
+                            <small class="text-muted d-block">Errors</small>
                         </div>
                         <div class="col-12" x-data="rollingCounter({{ $catalog->avg_latency }})">
                                 <div class="d-flex align-items-center mb-1">
