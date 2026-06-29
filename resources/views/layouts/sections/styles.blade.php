@@ -28,3 +28,25 @@
 
 <!-- Page Styles -->
 @yield('page-style')
+
+<!-- Table Dropdown Stacking and Overflow Fix -->
+<style>
+.dropdown:has(.dropdown-toggle.show),
+.dropdown:has(.dropdown-menu.show),
+.btn-group:has(.dropdown-toggle.show),
+.btn-group:has(.dropdown-menu.show) {
+  z-index: 1050 !important;
+  position: relative !important;
+}
+
+.table-responsive:has(.dropdown-toggle.show),
+.table-responsive:has(.dropdown-menu.show) {
+  overflow: visible !important;
+}
+
+.card:has(.dropdown-toggle.show),
+.card:has(.dropdown-menu.show) {
+  overflow: visible !important;
+}
+</style>
+

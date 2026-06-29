@@ -612,22 +612,5 @@ if (typeof $ !== 'undefined') {
                 psSearch.update();
             });
         }
-
-        // Fix Z-Index and Stacking for Dropdowns in Tables / Animated Lists
-        $(document).on('show.bs.dropdown', '.dropdown, .btn-group', function () {
-            $(this).css({ 'z-index': 1050, 'position': 'relative' });
-            var item = $(this).closest('tr, .animate__animated');
-            if (item.length) {
-                item.css({ 'z-index': 1050, 'position': 'relative' });
-            }
-            $(this).closest('.card, .table-responsive').css('overflow', 'visible');
-        });
-        $(document).on('hide.bs.dropdown', '.dropdown, .btn-group', function () {
-            $(this).css({ 'z-index': '', 'position': '' });
-            var item = $(this).closest('tr, .animate__animated');
-            if (item.length) {
-                item.css({ 'z-index': '', 'position': '' });
-            }
-        });
     });
 }
