@@ -32,13 +32,13 @@ document.addEventListener('show.bs.dropdown', function (event) {
         dropdown.style.position = 'relative';
         
         var tableResponsive = dropdown.closest('.table-responsive');
-        if (tableResponsive) {
+        /* if (tableResponsive) {
             tableResponsive.style.overflow = 'visible';
-        }
+        } */
         var card = dropdown.closest('.card');
-        if (card) {
+        /* if (card) {
             card.style.overflow = 'visible';
-        }
+        } */
         
         var row = dropdown.closest('tr, .animate__animated');
         if (row) {
@@ -55,13 +55,13 @@ document.addEventListener('hide.bs.dropdown', function (event) {
         dropdown.style.position = '';
         
         var tableResponsive = dropdown.closest('.table-responsive');
-        if (tableResponsive) {
+        /* if (tableResponsive) {
             tableResponsive.style.overflow = '';
-        }
+        } */
         var card = dropdown.closest('.card');
-        if (card) {
+        /* if (card) {
             card.style.overflow = '';
-        }
+        } */
         
         var row = dropdown.closest('tr, .animate__animated');
         if (row) {

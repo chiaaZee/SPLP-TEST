@@ -65,7 +65,7 @@
             </div>
         </div>
 
-        <div class="table-responsive text-nowrap">
+        <div class="table-responsive text-nowrap" style="overflow-x: auto !important;">
             <table class="table table-hover">
                 <thead>
                     <tr>
