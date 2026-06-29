@@ -129,8 +129,10 @@
 }
 
 /* Table Dropdown Stacking and Overflow Fix */
-tr:has(.dropdown-toggle.show),
-tr:has(.dropdown-menu.show) {
+.dropdown:has(.dropdown-toggle.show),
+.dropdown:has(.dropdown-menu.show),
+.btn-group:has(.dropdown-toggle.show),
+.btn-group:has(.dropdown-menu.show) {
   z-index: 1050 !important;
   position: relative !important;
 }
